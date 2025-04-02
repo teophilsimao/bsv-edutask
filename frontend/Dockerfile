@@ -10,7 +10,7 @@ COPY src /backend/src/
 
 COPY public /backend/public/
 
-EXPOSE 5000
+EXPOSE 5001
 
 ENV HOST=0.0.0.0
 
