@@ -13,12 +13,13 @@ def sut():
 @pytest.mark.parametrize(
     "email, dao_return, expected_output, expect_expection, warning_message",
     [
-        # Valid
+        # Found user
         ("user@test.com", [{"_id": 1, "email": "user@test.com"}], {"_id": 1, "email": "user@test.com"}, None, None),
+        # No user
         ("no@test.com", [], None, None, None),
     ]
 )
-def test_get_user_by_email(sut, email, dao_return, expected_output, expect_expection, warning_message, capsys):
+def test_get_user_by_email(sut, email, dao_return, expected_output, expect_expection, warning_message):
     controller, mocked_dao = sut
     mocked_dao.find.return_value = dao_return
     result = controller.get_user_by_email(email=email)
