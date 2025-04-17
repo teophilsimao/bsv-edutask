@@ -14,7 +14,7 @@ def sut():
     "email, dao_return, expected_output, expect_exception",
     [
         # Valid Email
-        # Found user
+        # Found user hej
         ("user@test.com", [{"email": "user@test.com"}], {"email": "user@test.com"}, None),
         ("many@test.com", [{"_id": 1, "email": "many@test.com"}, {"_id": 2, "email": "many@test.com"}], {"_id": 1, "email": "many@test.com"}, None),
         # No user
