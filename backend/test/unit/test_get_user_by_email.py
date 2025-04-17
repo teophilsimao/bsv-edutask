@@ -11,30 +11,30 @@ def sut():
 
 @pytest.mark.unit
 @pytest.mark.parametrize(
-    "email, dao_return, expected_output, expect_expection",
+    "email, dao_return, expected_output, expect_exception",
     [
         # Valid Email
         # Found user
-        ("user@test.com", [{"_id": 1, "email": "user@test.com"}], {"_id": 1, "email": "user@test.com"}, None),
+        ("user@test.com", [{"email": "user@test.com"}], {"email": "user@test.com"}, None),
         ("many@test.com", [{"_id": 1, "email": "many@test.com"}, {"_id": 2, "email": "many@test.com"}], {"_id": 1, "email": "many@test.com"}, None),
         # No user
-        ("no@test.com", [], None, None),
+        ("no@test.com", [{"email": "user@test.com"}], None, None),
 
         # Invalid Email
-        # ("user.com", None, None, ValueError),
-        # ("test@test", None, None, ValueError),
-        # ("test@", None, None, ValueError),
-        # ("test @test.com", None, None, ValueError),
-        # ("@test.com", None, None, ValueError),
-        # ("test", None, None, ValueError),
-        # ("@test", None, None, ValueError),
-        # ("@", None, None, ValueError),
+        ("user.com", None, None, ValueError),
+        ("test@test", None, None, ValueError),
+        ("test@", None, None, ValueError),
+        ("test @test.com", None, None, ValueError),
+        ("@test.com", None, None, ValueError),
+        ("test", None, None, ValueError),
+        ("@test", None, None, ValueError),
+        ("@", None, None, ValueError),
     ]
 )
-def test_get_user_by_email(sut, email, dao_return, expected_output, expect_expection):
+def test_get_user_by_email(sut, email, dao_return, expected_output, expect_exception):
     controller, mocked_dao = sut
-    if expect_expection:
-        with pytest.raises(expect_expection):
+    if expect_exception:
+        with pytest.raises(expect_exception):
             controller.get_user_by_email(email=email)
     else:
         mocked_dao.find.return_value = dao_return
