@@ -5,7 +5,6 @@ import json
 from src.util.dao import DAO
 from unittest.mock import patch
 from pymongo.errors import WriteError
-from bson.objectid import ObjectId
 
 
 @pytest.fixture
