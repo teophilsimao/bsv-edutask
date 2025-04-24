@@ -63,14 +63,20 @@ def dao():
         # Valid
         ({"firstName": "Mark", "lastName": "Henry", "email":"mark@henry.com"}, None),
 
-        # Invalid
+        # Invalid: Empty/Missing
         ({"firstName": "Mark", "lastName": "", "email":"shuifh@sefsef.com"}, WriteError),
         ({"firstName": "", "lastName": "Henry", "email":"awd@sef.com"}, WriteError),
         ({"firstName": "Mark", "lastName": "Henry", "email":""}, WriteError),
-
         ({"firstName": "Mark", "email":"room@djaam.com"}, WriteError),
         ({"lastName": "Henry", "email":"Mikl@boom.com"}, WriteError),
         ({"firstName": "Mark", "lastName": "Henry"}, WriteError),
+        # Invalid: bad data
+        ({"firstName": 123, "lastName": "", "email":"r@vg.com"}, WriteError),
+        ({"firstName": "Mark", "lastName": "Henry", "email":True}, WriteError),
+        ({"firstName": " ", "lastName": "Henry", "email":"room@fref.com"}, WriteError),
+        ({"firstName": None , "lastName": "Henry", "email":"room@fref.com"}, WriteError),
+        ({"firstName": "Mark" , "lastName": "Henry", "email":"m@h.c", "gender": "n/a"}, WriteError),
+        
         
     ]
 )
