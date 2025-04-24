@@ -75,7 +75,7 @@ def dao():
     ]
 )
 def test_create_user(dao, user_data, expected_output):
-
+    """ Test create user """
     if expected_output is not None:
         with pytest.raises(expected_output):
             dao.create(user_data)
@@ -90,6 +90,7 @@ def test_create_user(dao, user_data, expected_output):
 
 @pytest.mark.integration
 def test_create_with_duplicate_email(dao):
+    """ Test create two users with the same email """
     user_data = {
         "firstName": "Mark",
         "lastName": "Henry",
