@@ -76,8 +76,6 @@ def dao():
         ({"firstName": " ", "lastName": "Henry", "email":"room@fref.com"}, WriteError),
         ({"firstName": None , "lastName": "Henry", "email":"room@fref.com"}, WriteError),
         ({"firstName": "Mark" , "lastName": "Henry", "email":"m@h.c", "gender": "n/a"}, WriteError),
-        
-        
     ]
 )
 def test_create_user(dao, user_data, expected_output):
