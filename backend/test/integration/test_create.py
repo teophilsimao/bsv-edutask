@@ -56,15 +56,54 @@ def dao():
         database.drop_collection(test_collection_name)
         client.close()
 
+
 @pytest.mark.integration
-def test_create(dao):
+@pytest.mark.parametrize(
+    "user_data, expected_output",
+    [
+        # Valid
+        ({"firstName": "Mark", "lastName": "Henry", "email":"mark@henry.com"}, None),
+
+        # Invalid
+        ({"firstName": "Mark", "lastName": "", "email":"shuifh@sefsef.com"}, WriteError),
+        ({"firstName": "", "lastName": "Henry", "email":"awd@sef.com"}, WriteError),
+        ({"firstName": "Mark", "lastName": "Henry", "email":""}, WriteError),
+
+        ({"firstName": "Mark", "email":"room@djaam.com"}, WriteError),
+        ({"lastName": "Henry", "email":"Mikl@boom.com"}, WriteError),
+        ({"firstName": "Mark", "lastName": "Henry"}, WriteError),
+        
+    ]
+)
+def test_create_user(dao, user_data, expected_output):
+
+    if expected_output is not None:
+        with pytest.raises(expected_output):
+            dao.create(user_data)
+    else:
+        user = dao.create(user_data)
+        assert user is not None
+        assert "_id" in user
+        assert user["firstName"] == user_data["firstName"]
+        assert user["lastName"] == user_data["lastName"]
+        assert user["email"] == user_data["email"]
+
+
+@pytest.mark.integration
+def test_create_with_duplicate_email(dao):
     user_data = {
         "firstName": "Mark",
-        "lastName": "Henrry",
+        "lastName": "Henry",
         "email":"mark@henry.com",
     }
 
-    user = dao.create(user_data)
+    user_data1 = {
+        "firstName": "Maison",
+        "lastName": "Martines",
+        "email":"mark@henry.com",
+    }
 
-    assert "_id" in user
+    dao.create(user_data)
 
+    with pytest.raises(WriteError):
+        dao.create(user_data1)
