@@ -61,12 +61,12 @@ describe('Logging into the system', () => {
 
         cy.get('form.inline-form').submit()
         
-        cy.get('li.todo-item')
+        cy.get('.todo-item')
           .should('contain.text', 'Just chilling')
     })
 
     it('add task without input', () => {
-        cy.get('li.todo-item')
+        cy.get('.todo-item')
           .then($before => {
             const itemsBefore = $before.length
 
@@ -74,11 +74,61 @@ describe('Logging into the system', () => {
               .clear()
             cy.get('form.inline-form').submit()
 
-            cy.get('li.todo-item')
+            cy.get('.todo-item')
               .should($after => {
                 expect($after.length).to.eq(itemsBefore)
               })
           })
+    })
+
+    it('Mark active todo as done', () => {
+        cy.get('.todo-item').first().within(() => {
+            cy.get('.checker')
+              .click()
+              .should('have.class', 'checked')
+        })
+    })
+
+    it('Mark done todo as active', () => {
+        cy.get('.todo-item').first().within(() => {
+            cy.get('.checker')
+              .click()
+              .should('have.class', 'unchecked')
+        })
+    })
+
+    it('Delete an active todo', () => {
+        cy.get('.todo-item')
+            .then($before => {
+              const itemsBefore = $before.length
+              
+              cy.get('.todo-item').first().within(() => {
+                cy.get('.remover')
+                  .click()
+              })
+
+            cy.get('.todo-item').should('have.length', itemsBefore - 1)
+        })
+    })
+
+    it('Delete a done todo', () => {
+        cy.get('.todo-item')
+            .then($before => {
+                const itemsBefore = $before.length
+
+                cy.get('.todo-item').first().within(() => {
+                    cy.get('.checker')
+                      .click()
+                      .should('have.class', 'checked')
+                })
+
+                cy.get('.todo-item').first().within(() => {
+                    cy.get('.remover')
+                      .click()
+                })
+
+                cy.get('.todo-item').should('have.length', itemsBefore -1)
+            })
     })
   
     after(function () {
