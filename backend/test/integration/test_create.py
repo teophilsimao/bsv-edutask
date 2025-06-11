@@ -15,36 +15,8 @@ def dao():
     client = pymongo.MongoClient(mongo_url)
     database = client.edutask
 
-    validator_json = """
-    {
-        "$jsonSchema": {
-            "bsonType": "object",
-            "required": ["firstName", "lastName", "email"],
-            "properties": {
-                "firstName": {
-                    "bsonType": "string",
-                    "description": "the first name of a user must be determined"
-                }, 
-                "lastName": {
-                    "bsonType": "string",
-                    "description": "the last name of a user must be determined"
-                },
-                "email": {
-                    "bsonType": "string",
-                    "description": "the email address of a user must be determined",
-                    "uniqueItems": true
-                },
-                "tasks": {
-                    "bsonType": "array",
-                    "items": {
-                        "bsonType": "objectId"
-                    }
-                }
-            }
-        }
-    }
-    """
-    validator = json.loads(validator_json)
+    with open('src/static/validators/user.json', 'r') as file:
+        validator = json.load(file)
 
     with patch('src.util.dao.getValidator', autospec=True) as mockedValidator:
         mockedValidator.return_value = validator
