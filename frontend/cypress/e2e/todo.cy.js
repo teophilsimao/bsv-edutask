@@ -60,7 +60,7 @@ describe('Logging into the system', () => {
       cy.get('img[src="http://i3.ytimg.com/vi/testintesting/hqdefault.jpg"]')
         .should('be.visible')
         .click()
-      cy.get('h1')
+      cy.get('h1') 
         .should('contain.text', 'Test Task')
     })
 
